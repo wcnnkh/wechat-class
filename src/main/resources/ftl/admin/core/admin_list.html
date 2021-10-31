@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/ftl/admin/core/head.htm"/>
+	</head>
+
+	<body>
+		<div class="main_title">
+			<div class="main_title_l">
+
+			</div>
+			<div class="main_title_r">
+			</div>
+			后台账号列表
+		</div>
+
+		<div class="main_table">
+			<table id="table" class="tab_content" cellpadding="0" cellspacing="0" width="100%" border="0">
+				<tr>
+					<td>
+						<input type="text" id="user"/>
+					</td>
+					<td>
+						<input type="password" id="pwd"/>
+					</td>
+					<td>
+						<input type="text" id="realName"/>
+					</td>
+					<td>
+						<select id="groupId">
+							<#list groupList as group>
+									<option value="${group.groupId?c}">${group.groupName}</option>
+								</#list>
+						</select>
+					</td>
+					<td>
+						<button class="btn btn-default" onclick="addUser()">添加账号</button>
+					</td>
+				</tr>
+				<tr>
+					<th>账号</th>
+					<th>密码</th>
+					<th>名称</th>
+					<th>组</th>
+					<th>操作</th>
+				</tr>
+				<#list adminList as user>
+					<#if 'admin' != user.user>
+						<tr>
+						<td>${user.user}<input type="hidden" name="user" value="${user.user}"></td>
+						<td><input type="password" name="pwd" /></td>
+						<td>
+							<input type="text" name="realName" value="${user.realName}" />
+						</td>
+						<td>
+							<select name="groupId">
+								<#list groupList as group>
+									<option value="${group.groupId?c}" <#if group.groupId==user.groupId>selected="selected"</#if>>${group.groupName}</option>
+								</#list>
+							</select>
+						</td>
+						<td>
+							<button class="btn btn-default deleteUser">删除</button>
+							<input class="btn btn-default updateUser" type="button" value="修改" />
+						</td>
+					</tr>
+					</#if>
+				</#list>
+			</table>
+		</div>
+		<script>
+			$(function() {
+				$("input.updateUser").click(function() {
+					var tr = $(this).parent().parent();
+					var pwdEle = tr.find("input[name='pwd']");
+					var user = tr.find("input[name='user']").val();
+					var pwd = pwdEle.val();
+					var realName = tr.find("input[name='realName']").val();
+					var groupId = tr.find("select[name='groupId']").val();
+					$.post("update_admin_user", {"user":user, "pwd":pwd, "realName":realName, "groupId":groupId}, function(json) {
+						if(json.success) {
+							pwdEle.val("");
+							alert("修改成功");
+						} else {
+							alert("删除失败");
+							window.location.reload(true);
+						}
+					})
+				})
+
+				$("button.deleteUser").click(function() {
+					var tr = $(this).parent().parent();
+					var user = tr.find("input[name='user']").val();
+					$.post("delete_admin_user", {
+						"user": user
+					}, function(json) {
+						if(json.success) {
+							$(this).parent().parent().remove();
+							alert("删除成功");
+						} else {
+							alert("删除失败");
+							window.location.reload(true);
+						}
+					})
+				})
+			})
+			
+			function addUser(){
+				var user = $("#user").val();
+				var pwd = $("#pwd").val();
+				var realName = $("#realName").val();
+				var groupId = $("#groupId").val();
+				if(user.length == 0 || pwd.length == 0 || realName.length == 0 || groupId.length == 0){
+					alert("请输入完整");
+					return ;
+				}
+				
+				$.post("add_admin_user", {"user":user, "pwd":pwd, "realName":realName, "groupId":groupId}, function(json){
+						if(json.success){
+							alert("添加成功");
+						}else{
+							alert("添加失败");
+						}
+						window.location.reload(true);
+					})
+			}
+		</script>
+	</body>
+
+</html>

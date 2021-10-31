@@ -1,0 +1,65 @@
+<adminaction-config>
+	<!-- 含以下字符的请转义： &lt; < 小于号 &gt; > 大于号 &amp; & 和 &apos; ' 单引号 &quot; " 双引号 -->
+	<config>
+		<id>1</id>
+		<name>管理员列表</name>
+		<servletPath>/admin/core/admin_list.html</servletPath>
+		<method>GET</method>
+		<isShow>1</isShow>
+		<menuId>1</menuId>
+	</config>
+
+	<config>
+		<id>2</id>
+		<name>组管理</name>
+		<servletPath>/admin/core/group_list.html</servletPath>
+		<method>GET</method>
+		<isShow>1</isShow>
+		<menuId>1</menuId>
+	</config>
+
+	<config>
+		<id>3</id>
+		<name>修改密码</name>
+		<servletPath>/admin/core/updatePwd.html</servletPath>
+		<method>GET</method>
+		<isShow>1</isShow>
+		<menuId>1</menuId>
+	</config>
+	
+	<config>
+		<id>4</id>
+		<name>课程信息管理</name>
+		<servletPath>/admin/classInfo.html</servletPath>
+		<method>GET</method>
+		<isShow>1</isShow>
+		<menuId>2</menuId>
+	</config>
+	
+	<config>
+		<id>5</id>
+		<name>讲师列表</name>
+		<servletPath>/admin/lecturerList.html</servletPath>
+		<method>GET</method>
+		<isShow>1</isShow>
+		<menuId>2</menuId>
+	</config>
+	
+	<config>
+		<id>6</id>
+		<name>嘉宾列表</name>
+		<servletPath>/admin/guestList.html</servletPath>
+		<method>GET</method>
+		<isShow>1</isShow>
+		<menuId>2</menuId>
+	</config>
+	
+	<config>
+		<id>7</id>
+		<name>用户列表</name>
+		<servletPath>/admin/userList.html</servletPath>
+		<method>GET</method>
+		<isShow>1</isShow>
+		<menuId>2</menuId>
+	</config>
+</adminaction-config>

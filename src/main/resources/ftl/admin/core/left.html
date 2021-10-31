@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="${_request.contextPath}/static/css/admin.css" />
+	</head>
+
+	<body>
+
+		<body id="left">
+			<#list menuMap?keys as key>
+				<div class="nav_title">
+					<div class="nav_word">${key}</div>
+					<div class="nav_jt">
+						<a href="#"><img src="${_request.contextPath}/static/img/jiantou_down.png" /></a>
+					</div>
+				</div>
+				<#list menuMap[key] as a>
+					<div class="nav">
+						<ul>
+							<li>
+								<a href="${_request.contextPath + a.servletPath}" target="content">${a.name}</a>
+							</li>
+						</ul>
+					</div>
+				</#list>
+			</#list>
+		</body>
+</html>

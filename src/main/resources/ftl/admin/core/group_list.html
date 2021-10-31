@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/ftl/admin/core/head.htm"/>
+	</head>
+
+	<body>
+		<div class="main_title">
+			<div class="main_title_l">
+
+			</div>
+			<div class="main_title_r">
+			</div>
+			组列表
+		</div>
+
+		<div class="main_table">
+			<table id="table" class="tab_content" cellpadding="0" cellspacing="0" width="100%" border="0">
+				<tr>
+					<td><input id="groupName"/></td>
+					<td><button class="btn btn-default" onclick="addGroup()">添加组</button></td>
+				</tr>
+				<tr>
+					<th>组名</th>
+					<th>操作</th>
+				</tr>
+				<#list groupList as group>
+						<tr>
+						<td><input type="text" value="${group.groupName}" name="groupName"/><input type="hidden" name="groupId" value="${group.groupId?c}"></td>
+						<td>
+							<input class="btn btn-default updateName" type="button" value="修改名称" />
+							<a class="btn btn-default" href="updateGroup.html?groupId=${group.groupId?c}"/>修改权限</a>
+						</td>
+					</tr>
+				</#list>
+			</table>
+		</div>
+		<script>
+			$(function() {
+				$("input.updateName").click(function() {
+					var tr = $(this).parent().parent();
+					var groupId = tr.find("input[name='groupId']").val();
+					var groupName = tr.find("input[name='groupName']").val();
+					$.post("update_admin_group_name", {"groupId":groupId, "groupName":groupName}, function(json) {
+						if(json.success) {
+							alert("修改成功");
+						} else {
+							alert("删除失败");
+							window.location.reload(true);
+						}
+					})
+				})
+			})
+			
+			function addGroup(){
+				var groupName = $("#groupName").val();
+				if(groupName.length == 0){
+					alert("请输入组名");
+					return ;
+				}
+				
+				$.post("add_admin_group", {"groupName":groupName}, function(json){
+					if(json.success){
+						alert("添加成功");
+					}else{
+						alert("添加失败");
+					}
+					window.location.reload(true);
+				})
+			}
+		</script>
+	</body>
+
+</html>

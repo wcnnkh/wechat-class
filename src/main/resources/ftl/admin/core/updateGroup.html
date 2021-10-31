@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/ftl/admin/core/head.htm"/>
+	</head>
+
+	<body>
+		<div class="main_title">
+			<div class="main_title_l">
+
+			</div>
+			<div class="main_title_r">
+				<a href="group_list.html">返回上一级</a>
+			</div>
+			${group.groupName}权限
+		</div>
+
+		<div class="main_table">
+			<table id="table" class="tab_content" cellpadding="0" cellspacing="0" width="100%" border="0">
+				
+				<#list actionMap?keys as key>
+					<tr>
+						<td>${key}</td>
+						<td>
+							<#list actionMap[key] as action>
+								<div class="col-xs-4">
+									<input type="checkbox" value="${action.id}" name="actionId" <#if idMap[action.id?string]??>checked="checked"</#if>/>${action.name}
+								</div>
+							</#list>
+						</td>
+					</tr>
+				</#list>
+			</table>
+		</div>
+		<button onclick="changeGroup()" class="btn btn-success col-xs-12">修改权限</button>
+		<script>
+			function changeGroup(){
+				var str = ",";
+				$("input[name='actionId']:checked").each(function(){
+					str += $(this).val() + ",";
+				})
+				
+				$.post("update_admin_group_actionIds", {"actionIds":str, "groupId":'${group.groupId?c}'}, function(json){
+					if(json.success){
+						alert("修改成功");
+						window.location.href = "group_list.html";
+					}else{
+						alert("修改失败");
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/ftl/admin/core/head.htm"/>
+	</head>
+
+	<body id="main">
+		<div class="main_title">
+			<div class="main_title_l"></div>
+			<div class="main_title_r"> </div>
+			嘉宾列表
+		</div>
+		<!-- <form action="?act=export_excel_log" method="post" name="myform2" >
+	<div id="light" class="white_content">
+    <div class="con"> 
+     	<label>请选择要导出的操作时间区段：(PS: 不填时间则导出所有信息)</label><br />
+     	开始日期：<input type="text" name="fromDay" id="fromDay" size="15" maxlength="10"/> &nbsp;&nbsp;
+     	结束日期：<input type="text" name="toDay" id="toDay" size="15" maxlength="10"/> &nbsp;&nbsp;<br />
+    	<input type="button" value="关闭" onclick="hide('light')"/>&nbsp;&nbsp;&nbsp;&nbsp;
+      	<input type="submit" value="确定" onclick="hide('light');"/>
+    </div>
+	</div>
+	</form>
+	<div id="fade" class="black_overlay"></div> -->
+		<div class="main_table">
+			<table class="tab_content" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<th>openid</th>
+					<th>手机号</th>
+					<th>用户昵称</th>
+					<th>用户头像</th>
+					<th>注册时间</th>
+					<th>用户类型</th>
+					<th>描述</th>
+					<th>操作</th>
+				</tr>
+				<#list userList as user>
+					<tr class="evenline">
+						<td>${user.openid}<input type="hidden" value="${user.openid}"/></td>
+						<td>${(user.phone)!''}</td>
+						<td>${user.nickName}</td>
+						<td><img src="${user.titleImg}" style="width: 40px;border-radius: 20px;"></td>
+						<td>${user.registerTimeStr}</td>
+						<td>
+							<select>
+								<option <#if user.userType==0>selected="selected"</#if> value="0">学员</option>
+								<option <#if user.userType==1>selected="selected"</#if> value="1">讲师</option>
+								<option <#if user.userType==2>selected="selected"</#if> value="2">嘉宾</option>
+							</select>
+						</td>
+						<td>
+							<textarea>${(user.userDesc)!}</textarea>
+						</td>
+						<td>
+							<button class="btn btn-default updateUser">修改</button>
+						</td>
+					</tr>
+				</#list>
+			</table>
+		</div>
+		<script>
+			$(function() {
+				$("button.updateUser").click(function() {
+					if(!confirm("你确定要修改吗?")) {
+						return;
+					}
+					
+					var tr = $(this).parent().parent();
+					var openid = tr.find("input").val();
+					var userType = tr.find("select").val();
+					var userDesc = tr.find("textarea").val();
+					$.post("updateClassUser", {"openid":openid, "desc":userDesc, "userType":userType}, function(json){
+						if(json.success){
+							alert("修改成功");
+						}else{
+							alert("修改失败");
+						}
+						window.location.reload(true);
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>

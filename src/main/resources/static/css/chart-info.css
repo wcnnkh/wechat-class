@@ -1,0 +1,121 @@
+body{
+	color: #737373;
+}
+
+#login .modal-body>div{
+	margin-bottom: 14px;
+}
+
+.fl{
+	float: left;
+}
+
+.fr{
+	float: right;
+}
+
+h3.title{
+	color: #000000;
+}
+
+.title{
+	padding: 4px 15px 16px 15px;
+}
+
+.title .fl{
+	color: #737373;
+	text-decoration: none;
+}
+
+ul.list{
+	padding-left: 0px;
+}
+
+ul.list li{
+	list-style: none;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-bottom: 16px;
+}
+
+ul.list li>div{
+	margin-left: 60px;
+}
+
+ul.list li>img{
+	float: left;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+}
+
+ul.list li>div>div{
+	font-size: 12px;
+}
+
+ul.list li>div>span{
+	font-size: 16px;
+}
+
+ul.list li>div>span>span{
+	margin-left: 8px;
+	color: #EC971F;
+}
+
+.info{
+	margin-bottom: 15px;
+}
+
+.info .row{
+	margin-top: 10px;
+	text-align: center;
+}
+
+.info .col-xs-4:first-child{
+	padding-left: 15px;
+}
+
+.info .col-xs-4{
+	border-right: 1px solid silver;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.info .col-xs-4:last-child{
+	border-right: 0px;
+	padding-right: 15px;
+}
+
+.info>span>span{
+	margin-left: 8px;
+	background-color: silver;
+	padding: 2px 2px 2px 2px;
+}
+
+/**
+ * fixed-bottom
+ */
+.navbar-fixed-bottom{
+	padding: 15px;
+	border-top: 1px solid #DDDDDD;
+	background-color: #FFFFFF;
+}
+
+.navbar-fixed-bottom a{
+	width: 100%;
+}
+
+.exuberant .fl{
+	color: #000000;
+}
+
+.exuberant{
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+footer{
+	margin-top: 40px;
+	margin-bottom: 85px;
+	color: #C0C0C0;
+}

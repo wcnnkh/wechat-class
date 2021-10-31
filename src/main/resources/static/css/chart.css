@@ -1,0 +1,186 @@
+html,body{
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+}
+
+.fl{
+	float: left;
+}
+
+.fr{
+	float: right;
+}
+
+ul.chat-list{
+	padding-left: 0px;
+	width: 100%;
+	margin-bottom: 0px;
+	overflow-y: auto;
+	background-color: #F5F5F5;
+	-webkit-overflow-scrolling: touch;
+	/*word-wrap: break-word;*/
+}
+
+ul.chat-list li{
+	list-style: none;
+	padding: 0px 10px;
+	margin-bottom: 16px;
+}
+
+ul.chat-list li.left div.title{
+	text-align: left;
+}
+
+ul.chat-list li.right div.title{
+	text-align: right;
+}
+
+ul.chat-list li.msg>div{
+	margin-left: 70px;
+	margin-right: 70px;
+}
+
+ul.chat-list li.left>img{
+	float: left;
+}
+
+ul.chat-list li.right>img{
+	float: right;
+}
+
+ul.chat-list li.msg .content{
+	position: relative;
+	background-color: #BCE8F1;
+	border-radius: 10px;
+	padding: 10px 20px;
+	/*white-space:normal;*/
+	word-wrap:break-word;
+	display: inline-block;
+	max-width: 100%;
+}
+
+ul.chat-list li.left .content{
+	float: left;
+}
+
+ul.chat-list li.right .content{
+	float: right;
+}
+
+ul.chat-list li.msg .content:after{
+	position: absolute;
+    top: 10px;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 15px solid rgba(25, 147, 147, 0.2);
+}
+
+ul.chat-list li.left .content:after{
+	  border-left: 15px solid transparent;
+    left: -15px;
+}
+
+ul.chat-list li.right .content:after{
+	  border-right: 15px solid transparent;
+    right: -15px;
+}
+
+ul.chat-list li.msg>img{
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+}
+
+/**
+ * time
+ */
+
+ul.chat-list li.time{
+	text-align: center;
+}
+
+ul.chat-list li.time span{
+	background-color: #ADADAD;
+	border-radius: 5px;
+	padding: 3px 5px;
+}
+
+ul.chat-list .img-msg{
+	width: 100px;
+}
+
+ul.chat-list span.nickName{
+	color: #337AB7;
+}
+ 
+ul.chat-list .msg-audio{
+	width: 32px;
+}
+
+/**
+ * page
+ */
+.tool{
+	width: 100%;
+	padding-left: 108px;
+	padding-right: 54px;
+	position: relative;
+}
+
+.tool #input{
+	width: 100%;
+	resize: none;
+	height: 32px;
+}
+
+.tool>img{
+	width: 32px;
+	position: absolute;
+}
+
+.tool .picture{
+	left: 36px;
+}
+
+.tool .audio{
+	left: 72px;
+}
+
+.tool .raise{
+	left: 2px;
+}
+
+.tool .material{
+	left: 2px;
+}
+
+.tool input[type='button']{
+	height: 32px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+.top:first-child{
+	margin-top: 20px;
+}
+
+.top,.top-info{
+	border: 1px solid silver;
+	background-color: #FFFFFF;
+	color: #ADADAD;
+}
+
+.top-info .fr{
+	width: 18px;
+	height: 16px;
+	background-image: url(../img/top.png);
+	background-repeat: no-repeat;
+}
+
+
+.top-info .clearfix{
+	margin-bottom: 10px;
+}

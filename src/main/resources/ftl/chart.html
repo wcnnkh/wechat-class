@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>${(className.value)!}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="${_request.contextPath}/static/css/bootstrap.min.css" />
+		<!--[if lte IE 9]>
+    		<script src="${_request.contextPath}/static/js/respond.min.js"></script>
+    		<script src="${_request.contextPath}/static/js/html5shiv.min.js"></script>
+    	<![endif]-->
+		<link rel="stylesheet" href="${_request.contextPath}/static/css/chart.css" />
+	</head>
+
+	<body>
+		<ul class="chat-list" id="message-list">
+			<li>
+				<div class="msg text-center top">
+					当前在线人数<span id="onlineCount">${lineCount!'0'}</span>人
+				</div>
+			</li>
+
+			<li>
+				<div class="msg top-info">
+					<div class="text-center">点击查看听课须知</div>
+					<div style="display: none;">
+						<div class="clearfix">
+							<span class="fl">听课须知</span>
+							<a class="fr"></a>
+						</div>
+						<div>
+							1. 上课形式为语音+图片信息互动直播；<br/>
+							2. 课程内容每次仅保留2天，不可永久反复收听；<br/>
+							3. 请遵守课堂纪律，课程期间禁止随意发言，提问请按举手键；<br/>
+						</div>
+					</div>
+				</div>
+			</li>
+
+			<#if msgList??>
+				<#list msgList as m>
+					<li <#if m.openid==user.openid>class="msg clearfix right"
+						<#else>class="msg clearfix left"</#if>>
+			<img src="${m.user.titleImg}" />
+			<div class="clearfix">
+				<div class="title">${m.user.nickName}</div>
+				<div class="content">
+					<#if m.type==1>
+						${m.data?html}
+						<#elseif m.type==2>
+							<img src="${_request.contextPath}/static/img/audio.png" status="0" serverId="${m.data}" class="msg-audio" />
+							<#else>
+								<img src="" class="img-msg" serverId='${m.data}' />
+					</#if>
+				</div>
+			</div>
+			</li>
+			</#list>
+			</#if>
+		</ul>
+		<div class="tool">
+			<#if user.userType==1>
+				<img src="${_request.contextPath}/static/img/material.png" status="${(classIsShutup.value)!'0'}" class="material" />
+				<#else>
+					<img src="${_request.contextPath}/static/img/raise.png" status="0" class="raise" />
+			</#if>
+
+			<img src="${_request.contextPath}/static/img/picture.png" class="picture" />
+			<img src="${_request.contextPath}/static/img/audio.png" status="0" class="audio" />
+			<div>
+				<input id="input" type="text">
+				<input type="button" value="发送" onclick="sendText()" class="btn btn-success" />
+			</div>
+		</div>
+
+		<div class="modal fade" id="restLogin" tabindex="-1" role="dialog" aria-hidden="false" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center" id="myModalLabel">提示消息</h4>
+					</div>
+					<div class="modal-body">
+						你已与服务器断开连接，是否重新连接？
+					</div>
+					<div class="modal-footer">
+						<a type="button" class="btn btn-default" href="index.html">暂不连接</a>
+						<a type="button" class="btn btn-primary" href="chart.html">重新连接</a>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="alert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">提示信息</h4>
+					</div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+
+		<input id="openid" value="${user.openid}" type="hidden" />
+		<script type="text/javascript" src="${_request.contextPath}/static/js/jquery.min.js"></script>
+		<script type="text/javascript" src="${_request.contextPath}/static/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+		<script type="text/javascript" src="${_request.contextPath}/static/js/base.js"></script>
+		<script type="text/javascript" src="${_request.contextPath}/static/js/chart.js"></script>
+	</body>
+
+</html>

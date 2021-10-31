@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="shortcut icon" href="${_request.contextPath}/static/img/icon.png" type="image/x-icon" /> 
+		<link rel="stylesheet" href="${_request.contextPath}/static/css/admin.css" />
+		<style>
+			#bd_login {
+				background-image: url("${_request.contextPath}/static/img/main_login_bg.png");
+			}
+		</style>
+	</head>
+
+	<body id="bd_login">
+		<div class="loginbox">
+			<div class="login_logo"> </div>
+			<div class="login_contop"></div>
+			<div class="login_conmid">
+				<div class="login_title" align="center">后台管理系统</div>
+				<div class="logon_con01">帐&nbsp;&nbsp;号：<input type="text" name="username" id="user" class="input_enter" /></div>
+				<div class="logon_con02">密&nbsp;&nbsp;码：<input type="password" name="password" id="pwd" class="input_enter" /></div>
+				<div class="login_btn"><input class="menu_login" type="button" onclick="login()" value="登 录" /></div>
+			</div>
+		</div>
+		<script type="text/javascript" src="${_request.contextPath}/static/js/jquery.min.js"></script>
+		<script>
+			function login() {
+				var user = $("#user").val();
+				var pwd = $("#pwd").val();
+				if(user.length == 0) {
+					alert("请输入用户名");
+					return;
+				}
+
+				if(pwd.length == 0) {
+					alert("请输入密码");
+					return;
+				}
+
+				$.post("login", { "user": user, "pwd": pwd }, function(json) {
+					if(json.success) {
+						window.location.href = "index.html";
+					} else {
+						alert(json.msg);
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

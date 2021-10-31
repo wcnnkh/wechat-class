@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>${(className.value)!}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="${_request.contextPath}/static/css/bootstrap.min.css" />
+		<!--[if lte IE 9]>
+    		<script src="${_request.contextPath}/static/js/respond.min.js"></script>
+    		<script src="${_request.contextPath}/static/js/html5shiv.min.js"></script>
+    	<![endif]-->
+		<link rel="stylesheet" href="${_request.contextPath}/static/css/chart-info.css" />
+	</head>
+
+	<body>
+		<img src="${_request.contextPath}/static/img/class_banner.jpg" style="width: 100%;" />                                    
+		<h3 class="title">${(className.value)!}</h3>
+		<div class="title">
+			<span>时长${(classTime.value)!'0'}分钟&nbsp;&nbsp;</span>|<span>&nbsp;&nbsp;${(classPopularity.value)!'0'}人气</span>
+		</div>
+
+		<div class="title clearfix">
+			<a class="fl">讲师介绍 </a>
+			<a class="fr">课堂咨询</a>
+		</div>
+
+		<ul class="list">
+			<#if lecturerList??>
+				<#list lecturerList as user>
+					<li class="clearfix">
+						<img src="${user.titleImg}" />
+						<div>
+							<span>${user.nickName}</span>
+							<div>
+								${user.userDesc}
+							</div>
+						</div>
+					</li>
+				</#list>
+			</#if>
+
+			<#if guestList??>
+				<#list guestList as user>
+					<li class="clearfix">
+						<img src="${user.titleImg}" />
+						<div>
+							<span>${user.nickName}<span>嘉宾</span></span>
+							<div>
+								${(user.userDesc)!''}
+							</div>
+						</div>
+					</li>
+				</#list>
+			</#if>
+
+		</ul>
+		<div class="exuberant clearfix">
+			<span class="fl">听课须知</span>
+			<span class="fr">点击查看&nbsp;></span>
+		</div>
+		<div class="title" style="display: none;">
+			1. 上课形式为语音+图片信息互动直播<br/>
+			2. 课程内容每次仅保留2天，不可永久反复收听；<br/>
+			3. 请遵守课堂纪律，课程期间禁止随意发言，提问请按举手键；<br/>
+			4. 对课程有疑问可点击扫描上方二维码进群询问；<br/>
+		</div>
+
+		<footer class="text-center">
+			<a href="https://github.com/wcnnkh/ ">github.com/wcnnkh/</a>
+		</footer>
+		<div class="navbar-fixed-bottom">
+			<a class="btn btn-success" href="chart.html">进入课堂</a>
+		</div>
+
+		<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-hidden="false" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-center" id="myModalLabel">绑定手机号</h4>
+					</div>
+					<div class="modal-body">
+						<div class="col-xs-12">
+							<input class="form-control" type="number" placeholder="手机号" id="phone" />
+						</div>
+						<div class="col-xs-6" style="padding-right: 0px;">
+							<input class="form-control" type="number" placeholder="验证码" id="code" />
+						</div>
+						<div class="col-xs-6" style="padding-left: 0px;">
+							<button class="btn btn-success form-control" onclick="sendCode(this)">获取验证码</button>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="col-xs-12">
+							<button type="button" class="btn btn-success col-xs-12" onclick="bindPhone()">确定</button>
+						</div>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+		<script type="text/javascript" src="${_request.contextPath}/static/js/jquery.min.js" ></script>
+		<script type="text/javascript" src="${_request.contextPath}/static/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="${_request.contextPath}/static/js/base.js"></script>
+		<script>
+			$(function() {
+				$("div.exuberant").click(function() {
+						var fr = $(this).find("span.fr");
+						if(fr.html() == "点击查看&nbsp;&gt;") {
+							fr.html("收起&nbsp;&gt;")
+							$(this).next("div.title").slideDown();
+						} else {
+							fr.html("点击查看&nbsp;&gt;")
+							$(this).next("div.title").slideUp();
+						}
+					})
+
+					<#if !((user.phone)??)>
+						<!-- 不要求绑定手机号 -->
+						//$("#login").modal("show"); 
+					</#if>
+			})
+
+			function sendCode(ele) {
+				if($(ele).hasClass("disabled")) {
+					return;
+				}
+
+				var phone = $("#phone").val();
+				if(phone.length == 0) {
+					alert("请输入手机号");
+					return;
+				}
+
+				$.post("/smt-wx-class/sendCode", {
+					"phone": phone
+				}, function(json) {
+					if(json.success) {
+						var time = 60;
+						ele.innerHTML = "重新发送(60s)";
+						$(ele).addClass("disabled");
+						fixedCountInterval(function() {
+							time--;
+							if(time <= 0) {
+								ele.innerHTML = "重新发送";
+								$(ele).removeClass("disabled")
+								return;
+							}
+							ele.innerHTML = "重新发送(" + time + "s)";
+						}, 60, 1000);
+					} else {
+						alert(json.msg);
+					}
+				})
+			}
+
+			function bindPhone() {
+				var phone = $("#phone").val();
+				var code = $("#code").val();
+				if(phone.length == 0) {
+					alert("请输入手机号");
+					return;
+				}
+
+				if(code.length == 0) {
+					alert("请输入验证码");
+					return;
+				}
+
+				$.post("/smt-wx-class/bindPhone", {
+					"phone": phone,
+					"code": code,
+				}, function(json) {
+					if(json.success) {
+						$("#login").modal("hide");
+					} else {
+						alert(json.msg);
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

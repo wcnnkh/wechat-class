@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/ftl/admin/core/head.htm"/>
+	</head>
+	<body>
+		<div class="main_title">
+			<div class="main_title_l">
+
+			</div>
+			<div class="main_title_r">
+			</div>
+			修改密码
+		</div>
+		
+		<input type="password" id="oldPwd" class="form-control" placeholder="旧密码"/>
+		<input type="password" id="newPwd1" class="form-control" placeholder="新密码"/>
+		<input type="password" id="newPwd2" class="form-control" placeholder="确认新密码"/>
+		<button class="btn btn-success form-control" onclick="updatePwd()">修改</button>
+		<script>
+			function updatePwd(){
+				var oldPwd = $("#oldPwd").val();
+				var newPwd1 = $("#newPwd1").val();
+				var newPwd2 = $("#newPwd2").val();
+				if(oldPwd.length == 0){
+					showTempMsg("请输入旧密码");
+					return ;
+				}
+				
+				if(newPwd1.length == 0){
+					showTempMsg("请输入新密码");
+					return ;
+				}
+				
+				if(newPwd2.length == 0){
+					showTempMsg("请确认新密码");
+					return ;
+				}
+				
+				$.post("/service/admin/core/updateAdminPwd", {"oldPwd": oldPwd, "newPwd":newPwd1}, function(json){
+					if(json.success){
+						alert("修改成功");
+						$("#oldPwd").val("");
+						$("#newPwd1").val("");
+						$("#newPwd2").val("");
+					}else{
+						alert(json.data);
+					}
+				})
+			}
+		</script>
+	</body>
+</html>
