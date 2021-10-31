@@ -60,10 +60,10 @@ $(function() {
 			if(status == 0) {
 				wx.startRecord();
 				$(this).attr("status", 1); //录音中
-				$(this).attr("src", "img/stopRecord.png");
+				$(this).attr("src", "static/img/stopRecord.png");
 			} else {
 				$(this).attr("status", 0); //停止
-				$(this).attr("src", "img/audio.png");
+				$(this).attr("src", "static/img/audio.png");
 				wx.stopRecord({
 					success: function(res) {
 						var localId = res.localId;
@@ -78,7 +78,7 @@ $(function() {
 				var localId = res.localId; // 返回音频的本地ID
 				console.log(localId);
 				var img = $("img[localId='" + localId + "']");
-				img.attr("src", "img/audio.png");
+				img.attr("src", "static/img/audio.png");
 				img.attr("status", 0);
 			}
 		});
@@ -87,7 +87,7 @@ $(function() {
 			// 录音时间超过一分钟没有停止的时候会执行 complete 回调
 			complete: function(res) {
 				$("img.audio").attr("status", 0); //停止
-				$("img.audio").attr("src", "img/audio.png");
+				$("img.audio").attr("src", "static/img/audio.png");
 				var localId = res.localId;
 				uploadVoice(localId);
 			}
@@ -125,7 +125,7 @@ $(function() {
 						var localId = res.localId; // 返回音频的本地ID
 						myImg.attr("localId", localId);
 						myImg.attr("status", 1);
-						myImg.attr("src", "img/stopAudio.png");
+						myImg.attr("src", "static/img/stopAudio.png");
 						wx.playVoice({
 							localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
 						});
@@ -135,13 +135,13 @@ $(function() {
 				var status = $(this).attr("status");
 				if(status == 0) {
 					myImg.attr("status", 1);
-					myImg.attr("src", "img/stopAudio.png");
+					myImg.attr("src", "static/img/stopAudio.png");
 					wx.playVoice({
 						localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
 					});
 				} else {
 					myImg.attr("status", 0);
-					myImg.attr("src", "img/audio.png");
+					myImg.attr("src", "static/img/audio.png");
 					wx.stopVoice({
 						localId: localId //  需要停止的音频的本地ID，由stopRecord接口获得
 					});
@@ -411,7 +411,7 @@ function addHtmlMessage(data) {
 					break;
 				case 2:
 					var img = document.createElement("img");
-					img.setAttribute("src", "img/audio.png");
+					img.setAttribute("src", "static/img/audio.png");
 					img.setAttribute("serverId", data.data);
 					img.setAttribute("status", 0);
 					img.className = "msg-audio";
@@ -433,7 +433,7 @@ function addHtmlMessage(data) {
 									var localId = res.localId; // 返回音频的本地ID
 									myImg.attr("localId", localId);
 									myImg.attr("status", 1);
-									myImg.attr("src", "img/stopAudio.png");
+									myImg.attr("src", "static/img/stopAudio.png");
 									wx.playVoice({
 										localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
 									});
@@ -443,13 +443,13 @@ function addHtmlMessage(data) {
 							var status = $(this).attr("status");
 							if(status == 0) {
 								myImg.attr("status", 1);
-								myImg.attr("src", "img/stopAudio.png");
+								myImg.attr("src", "static/img/stopAudio.png");
 								wx.playVoice({
 									localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
 								});
 							} else {
 								myImg.attr("status", 0);
-								myImg.attr("src", "img/audio.png");
+								myImg.attr("src", "static/img/audio.png");
 								wx.stopVoice({
 									localId: localId //  需要停止的音频的本地ID，由stopRecord接口获得
 								});
