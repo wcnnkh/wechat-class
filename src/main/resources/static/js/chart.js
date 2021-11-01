@@ -401,7 +401,7 @@ function addHtmlMessage(data) {
 			div.appendChild(contentDiv);
 			switch(data.type) {
 				case 1:
-					$(contentDiv).text(data.data.data);
+					$(contentDiv).text(data.data);
 					//contentDiv.innerHTML = msgContent;
 					msgList.appendChild(li);
 

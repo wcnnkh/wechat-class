@@ -104,7 +104,7 @@ public class Wechat {
 			message.setData(json.getString("data"));
 			message.setOpenid(openid);
 			message.setType(json.getIntValue("type"));
-			json.put("data", message);
+			json.put("data", message.getData());
 			DBManager.save(message);
 			sessionManager.sendText(json.toJSONString());
 			break;
