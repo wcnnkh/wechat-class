@@ -12,7 +12,7 @@ import io.basc.framework.db.DB;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.security.session.Session;
 import io.basc.framework.sql.SimpleSql;
-import io.basc.framework.timer.annotation.Schedule;
+import io.basc.framework.timer.boot.annotation.Schedule;
 import io.basc.framework.util.TimeUtils;
 import io.github.wcnnkh.wechatclass.bean.User;
 
