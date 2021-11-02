@@ -38,7 +38,7 @@ public class ClassController {
 				.getWebSetting(WebSettingType.classCts));
 		request.setAttribute("classIsShutup", WebSettingManager.instance
 				.getWebSetting(WebSettingType.classIsShutup));
-		return new ModelAndView("/ftl/admin/classinfo.html");
+		return new ModelAndView("/ftl/admin/classInfo.html");
 	}
 
 	@Controller(value = "updateClassInfo", methods = HttpMethod.POST)

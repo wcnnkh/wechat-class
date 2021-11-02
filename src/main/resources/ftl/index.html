@@ -35,7 +35,7 @@
 						<div>
 							<span>${user.nickName}</span>
 							<div>
-								${user.userDesc}
+								${(user.userDesc)!''}
 							</div>
 						</div>
 					</li>
@@ -45,9 +45,9 @@
 			<#if guestList??>
 				<#list guestList as user>
 					<li class="clearfix">
-						<img src="${user.titleImg}" />
+						<img src="${(user.titleImg)!''}" />
 						<div>
-							<span>${user.nickName}<span>嘉宾</span></span>
+							<span>${(user.nickName)!''}<span>嘉宾</span></span>
 							<div>
 								${(user.userDesc)!''}
 							</div>
@@ -117,11 +117,6 @@
 							$(this).next("div.title").slideUp();
 						}
 					})
-
-					<#if !((user.phone)??)>
-						<!-- 不要求绑定手机号 -->
-						//$("#login").modal("show"); 
-					</#if>
 			})
 
 			function sendCode(ele) {
@@ -135,7 +130,7 @@
 					return;
 				}
 
-				$.post("/smt-wx-class/sendCode", {
+				$.post("sendCode", {
 					"phone": phone
 				}, function(json) {
 					if(json.success) {
@@ -170,7 +165,7 @@
 					return;
 				}
 
-				$.post("/smt-wx-class/bindPhone", {
+				$.post("bindPhone", {
 					"phone": phone,
 					"code": code,
 				}, function(json) {
