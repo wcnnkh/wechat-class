@@ -39,7 +39,7 @@
 					return ;
 				}
 				
-				$.post("/service/admin/core/updateAdminPwd", {"oldPwd": oldPwd, "newPwd":newPwd1}, function(json){
+				$.post("updateAdminPwd", {"oldPwd": oldPwd, "newPwd":newPwd1}, function(json){
 					if(json.success){
 						alert("修改成功");
 						$("#oldPwd").val("");
