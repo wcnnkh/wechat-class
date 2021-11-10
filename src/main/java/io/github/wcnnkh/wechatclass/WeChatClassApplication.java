@@ -3,8 +3,8 @@ package io.github.wcnnkh.wechatclass;
 import io.basc.framework.beans.annotation.Bean;
 import io.basc.framework.boot.support.MainApplication;
 import io.basc.framework.db.DB;
-import io.basc.framework.mvc.model.ModelAndViewRegistry;
 import io.basc.framework.sqlite.SQLiteDB;
+import io.basc.framework.web.message.model.ModelAndViewRegistry;
 import io.basc.framework.web.resource.StaticResourceRegistry;
 
 public class WeChatClassApplication {

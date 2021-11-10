@@ -10,29 +10,31 @@ import io.basc.framework.context.result.Result;
 import io.basc.framework.context.result.ResultFactory;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.http.HttpMethod;
-import io.basc.framework.mvc.annotation.Controller;
-import io.basc.framework.mvc.model.ModelAndView;
+import io.basc.framework.mvc.annotation.ActionInterceptors;
 import io.basc.framework.security.login.UserToken;
 import io.basc.framework.security.session.UserSession;
 import io.basc.framework.util.StringUtils;
 import io.basc.framework.web.ServerHttpRequest;
+import io.basc.framework.web.message.model.ModelAndView;
+import io.basc.framework.web.pattern.annotation.RequestMapping;
 import io.github.wcnnkh.wechatclass.bean.admin.AdminGroup;
 import io.github.wcnnkh.wechatclass.bean.admin.AdminUser;
 import io.github.wcnnkh.wechatclass.manager.AdminManager;
 
-@Controller(value = "admin", interceptors = AdminFilter.class)
+@ActionInterceptors(AdminFilter.class)
+@RequestMapping(value = "admin")
 public class IndexController {
 	@Autowired
 	private ResultFactory resultFactory;
 
-	@Controller(value = "core/top.html")
+	@RequestMapping(value = "core/top.html")
 	public ModelAndView top(UserToken<String> adminUser,
 			HttpServletRequest request) {
 		request.setAttribute("user", AdminManager.instance.getAdminUser(adminUser.getUid()));
 		return new ModelAndView("/ftl/admin/core/top.html");
 	}
 
-	@Controller(value = "core/left.html")
+	@RequestMapping(value = "core/left.html")
 	public ModelAndView left(UserToken<String> adminUser,
 			HttpServletRequest request) {
 		request.setAttribute("menuMap",
@@ -40,7 +42,7 @@ public class IndexController {
 		return new ModelAndView("/ftl/admin/core/left.html");
 	}
 
-	@Controller(value = "core/updatePwd", methods = HttpMethod.POST)
+	@RequestMapping(value = "core/updatePwd", methods = HttpMethod.POST)
 	public Result updatePwd(String oldPwd, String newPwd,
 			UserSession<String> adminUser) {
 		if (StringUtils.isEmpty(oldPwd, newPwd)) {
@@ -57,7 +59,7 @@ public class IndexController {
 		return resultFactory.success();
 	}
 
-	@Controller(value = "core/admin_list.html")
+	@RequestMapping(value = "core/admin_list.html")
 	public ModelAndView admin_list(HttpServletRequest request) {
 		request.setAttribute("adminList",
 				DBManager.getByIdList(AdminUser.class));
@@ -66,14 +68,14 @@ public class IndexController {
 		return new ModelAndView("/ftl/admin/core/admin_list.html");
 	}
 
-	@Controller(value = "core/add_admin_user.html")
+	@RequestMapping(value = "core/add_admin_user.html")
 	public ModelAndView add_admin(HttpServletRequest request) {
 		request.setAttribute("groupList",
 				DBManager.getByIdList(AdminGroup.class));
 		return new ModelAndView("/ftl/admin/core/add_admin_user.html");
 	}
 
-	@Controller(value = "core/add_admin_user", methods = HttpMethod.POST)
+	@RequestMapping(value = "core/add_admin_user", methods = HttpMethod.POST)
 	public Result add_user(String user, String pwd, String realName,
 			long groupId) {
 		AdminUser adminUser = DBManager.getById(AdminUser.class, user);
@@ -90,7 +92,7 @@ public class IndexController {
 		return resultFactory.success();
 	}
 
-	@Controller(value = "core/update_admin_user", methods = HttpMethod.POST)
+	@RequestMapping(value = "core/update_admin_user", methods = HttpMethod.POST)
 	public Result updateUser(String user, String pwd, String realName,
 			long groupId) {
 		AdminUser adminUser = DBManager.getById(AdminUser.class, user);
@@ -107,7 +109,7 @@ public class IndexController {
 		return resultFactory.success();
 	}
 
-	@Controller(value = "core/delete_admin_user", methods = HttpMethod.POST)
+	@RequestMapping(value = "core/delete_admin_user", methods = HttpMethod.POST)
 	public Result deleteUser(String user) {
 		AdminUser adminUser = DBManager.getById(AdminUser.class, user);
 		if (adminUser == null) {
@@ -118,14 +120,14 @@ public class IndexController {
 		return resultFactory.success();
 	}
 
-	@Controller(value = "core/group_list.html")
+	@RequestMapping(value = "core/group_list.html")
 	public ModelAndView group_list(HttpServletRequest request) {
 		request.setAttribute("groupList",
 				DBManager.getByIdList(AdminGroup.class));
 		return new ModelAndView("/ftl/admin/core/group_list.html");
 	}
 
-	@Controller(value = "core/add_admin_group", methods = HttpMethod.POST)
+	@RequestMapping(value = "core/add_admin_group", methods = HttpMethod.POST)
 	public Result add_group(String groupName) {
 		AdminGroup adminGroup = new AdminGroup();
 		adminGroup.setGroupId(System.currentTimeMillis());
@@ -134,7 +136,7 @@ public class IndexController {
 		return resultFactory.success();
 	}
 	
-	@Controller(value = "core/update_admin_group_name", methods = HttpMethod.POST)
+	@RequestMapping(value = "core/update_admin_group_name", methods = HttpMethod.POST)
 	public Result update_group_name(long groupId, String groupName) {
 		AdminGroup adminGroup = DBManager.getById(AdminGroup.class, groupId);
 		if (adminGroup == null) {
@@ -146,7 +148,7 @@ public class IndexController {
 		return resultFactory.success();
 	}
 
-	@Controller(value = "core/updateGroup.html")
+	@RequestMapping(value = "core/updateGroup.html")
 	public ModelAndView updateGroup(long groupId, HttpServletRequest request) {
 		AdminGroup adminGroup = DBManager.getById(AdminGroup.class, groupId);
 		Map<String, Boolean> map = new HashMap<>();
@@ -162,7 +164,7 @@ public class IndexController {
 		return new ModelAndView("/ftl/admin/core/updateGroup.html");
 	}
 
-	@Controller(value = "core/update_admin_group_actionIds", methods = HttpMethod.POST)
+	@RequestMapping(value = "core/update_admin_group_actionIds", methods = HttpMethod.POST)
 	public Result update_group_actionIds(long groupId, String actionIds) {
 		AdminGroup adminGroup = DBManager.getById(AdminGroup.class, groupId);
 		if (adminGroup == null) {
@@ -174,7 +176,7 @@ public class IndexController {
 		return resultFactory.success();
 	}
 
-	@Controller(value = "core/updateAdminPwd", methods = HttpMethod.POST)
+	@RequestMapping(value = "core/updateAdminPwd", methods = HttpMethod.POST)
 	public Result updatePwd(UserSession<String> adminUser,
 			String oldPwd, String newPwd) {
 		AdminUser user = DBManager.getById(AdminUser.class, adminUser.getUid());
@@ -187,7 +189,7 @@ public class IndexController {
 		return resultFactory.success();
 	}
 	
-	@Controller("/core/index.html")
+	@RequestMapping("/core/index.html")
 	public ModelAndView index(ServerHttpRequest request) {
 		return new ModelAndView("/ftl/admin/core/index.html");
 	}

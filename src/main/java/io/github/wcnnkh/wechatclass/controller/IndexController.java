@@ -1,12 +1,19 @@
 package io.github.wcnnkh.wechatclass.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import io.basc.framework.beans.annotation.Autowired;
 import io.basc.framework.context.result.ResultFactory;
 import io.basc.framework.db.DBManager;
-import io.basc.framework.mvc.annotation.Controller;
-import io.basc.framework.mvc.model.ModelAndView;
+import io.basc.framework.mvc.annotation.ActionInterceptors;
 import io.basc.framework.mvc.view.Redirect;
 import io.basc.framework.web.ServerHttpRequest;
+import io.basc.framework.web.message.model.ModelAndView;
+import io.basc.framework.web.pattern.annotation.RequestMapping;
 import io.github.wcnnkh.wechatclass.bean.Message;
 import io.github.wcnnkh.wechatclass.bean.User;
 import io.github.wcnnkh.wechatclass.bean.WebSetting;
@@ -14,18 +21,12 @@ import io.github.wcnnkh.wechatclass.enums.WebSettingType;
 import io.github.wcnnkh.wechatclass.manager.UserManager;
 import io.github.wcnnkh.wechatclass.manager.WebSettingManager;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-@Controller
+@RequestMapping
 public class IndexController {
 	@Autowired
 	private ResultFactory resultFactory;
 
-	@Controller(value = "userinfo")
+	@RequestMapping(value = "userinfo")
 	public void userinfo(String openid, String headimgurl, String nickname,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
@@ -52,7 +53,7 @@ public class IndexController {
 		response.sendRedirect(request.getContextPath() +  "/index.html");
 	}
 
-	@Controller(value = "index.html")
+	@RequestMapping(value = "index.html")
 	public Object index(ServerHttpRequest request) {
 		String openid = UserManager.instance.getOpenId(request.getSession());
 		if (openid == null) {
@@ -76,7 +77,8 @@ public class IndexController {
 		return view;
 	}
 
-	@Controller(value = "chart.html", interceptors = LoginFilter.class)
+	@ActionInterceptors(LoginFilter.class)
+	@RequestMapping(value = "chart.html")
 	public ModelAndView chat(ServerHttpRequest request) {
 		String openid = UserManager.instance.getOpenId(request.getSession());
 		request.setAttribute("user", UserManager.instance.getUser(openid));
