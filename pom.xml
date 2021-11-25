@@ -48,11 +48,6 @@
 			<artifactId>tomcat</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.basc.start</groupId>
-			<artifactId>aliyun</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>io.basc.framework</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>

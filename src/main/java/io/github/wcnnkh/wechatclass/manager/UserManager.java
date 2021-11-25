@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import io.basc.framework.beans.annotation.Autowired;
 import io.basc.framework.beans.annotation.InitMethod;
+import io.basc.framework.context.annotation.Indexed;
 import io.basc.framework.db.DB;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.security.session.Session;
@@ -16,6 +17,7 @@ import io.basc.framework.timer.boot.annotation.Schedule;
 import io.basc.framework.util.TimeUtils;
 import io.github.wcnnkh.wechatclass.bean.User;
 
+@Indexed
 public class UserManager {
 	@Autowired
 	public static UserManager instance;

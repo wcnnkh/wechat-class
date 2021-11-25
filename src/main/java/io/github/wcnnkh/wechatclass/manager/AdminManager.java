@@ -12,6 +12,7 @@ import io.basc.framework.beans.annotation.InitMethod;
 import io.basc.framework.beans.annotation.Value;
 import io.basc.framework.codec.Encoder;
 import io.basc.framework.codec.support.CharsetCodec;
+import io.basc.framework.context.annotation.Indexed;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.util.StringUtils;
 import io.github.wcnnkh.wechatclass.bean.admin.AdminGroup;
@@ -19,6 +20,7 @@ import io.github.wcnnkh.wechatclass.bean.admin.AdminUser;
 import io.github.wcnnkh.wechatclass.conf.AdminAction;
 import io.github.wcnnkh.wechatclass.conf.AdminMenu;
 
+@Indexed
 public class AdminManager {
 	@Autowired
 	public static AdminManager instance;
