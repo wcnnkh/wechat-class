@@ -13,6 +13,7 @@ import io.basc.framework.beans.annotation.Value;
 import io.basc.framework.codec.Encoder;
 import io.basc.framework.codec.support.CharsetCodec;
 import io.basc.framework.context.annotation.Indexed;
+import io.basc.framework.db.DB;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.util.StringUtils;
 import io.github.wcnnkh.wechatclass.bean.admin.AdminGroup;
@@ -26,6 +27,9 @@ public class AdminManager {
 	public static AdminManager instance;
 
 	private static final Encoder<String, String> PASSWORD_ENCODE = CharsetCodec.UTF_8.toMD5();
+	
+	@Autowired
+	private DB db;
 
 	@Value(value = "/admin/admin_menu.xml")
 	private Map<Integer, AdminMenu> menuMap = new HashMap<Integer, AdminMenu>();
@@ -59,7 +63,7 @@ public class AdminManager {
 	}
 
 	public AdminUser getAdminUser(String username) {
-		return DBManager.getById(AdminUser.class, username);
+		return db.getById(AdminUser.class, username);
 	}
 
 	public AdminUser create(String username, String pwd, String realName, long groupId) {
@@ -68,7 +72,7 @@ public class AdminManager {
 		adminUser.setPwd(PASSWORD_ENCODE.encode(pwd));
 		adminUser.setRealName(realName);
 		adminUser.setGroupId(groupId);
-		DBManager.save(adminUser);
+		db.save(adminUser);
 		return adminUser;
 	}
 
