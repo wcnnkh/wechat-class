@@ -144,8 +144,7 @@ public class ClassController {
 							.shared());
 		} else {
 			request.setAttribute("userList", datasource
-					.query(User.class, new SimpleSql("select * from user where phone like ? or nickName like ?",
-							"order by registerTime desc limit ?,20", "%" + content + "%", "%" + content + "%", begin))
+					.query(User.class, new SimpleSql("select * from user where phone like ? or nickName like ? order by registerTime desc limit ?,20", "%" + content + "%", "%" + content + "%", begin))
 					.shared());
 		}
 
