@@ -8,7 +8,7 @@ import io.basc.framework.context.result.ResultFactory;
 import io.basc.framework.db.DB;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.http.HttpMethod;
-import io.basc.framework.microsoft.support.WebSqlExcelExport;
+import io.basc.framework.microsoft.ExcelTemplate;
 import io.basc.framework.mvc.annotation.ActionInterceptors;
 import io.basc.framework.sql.SimpleSql;
 import io.basc.framework.web.ServerHttpResponse;
@@ -143,9 +143,9 @@ public class ClassController {
 									new SimpleSql("select * from user order by registerTime desc limit ?,20", begin))
 							.shared());
 		} else {
-			request.setAttribute("userList", datasource
-					.query(User.class, new SimpleSql("select * from user where phone like ? or nickName like ? order by registerTime desc limit ?,20", "%" + content + "%", "%" + content + "%", begin))
-					.shared());
+			request.setAttribute("userList", datasource.query(User.class, new SimpleSql(
+					"select * from user where phone like ? or nickName like ? order by registerTime desc limit ?,20",
+					"%" + content + "%", "%" + content + "%", begin)).shared());
 		}
 
 		request.setAttribute("content", content);
@@ -169,9 +169,9 @@ public class ClassController {
 
 	@RequestMapping(value = "downMessage")
 	public void downMessage(HttpServletRequest request, ServerHttpResponse httpServletResponse) throws Exception {
-		WebSqlExcelExport.create(httpServletResponse, "聊天记录").export(new String[] { "openid", "昵称", "时间", "类型", "内容" },
-				datasource, new SimpleSql(
-						"select m.openid, u.nickName, FROM_UNIXTIME(m.cts,'%Y-%m-%d %H:%m:%s'), m.type, m.`data` from user as u,message as m where u.openid=m.openid"));
+		datasource.export(new SimpleSql(
+				"select m.openid as 'openid', u.nickName as '昵称', FROM_UNIXTIME(m.cts,'%Y-%m-%d %H:%m:%s') as '时间', m.type as '类型', m.`data` as '内容' from user as u,message as m where u.openid=m.openid"),
+				new ExcelTemplate()).export(httpServletResponse, "聊天记录.xls");
 	}
 
 	@RequestMapping(value = "notification")
