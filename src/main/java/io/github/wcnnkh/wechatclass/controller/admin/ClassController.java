@@ -170,7 +170,7 @@ public class ClassController {
 	@RequestMapping(value = "downMessage")
 	public void downMessage(HttpServletRequest request, ServerHttpResponse httpServletResponse) throws Exception {
 		datasource.export(new SimpleSql(
-				"select m.openid as 'openid', u.nickName as '昵称', datetime(m.cts/1000) as '时间', m.type as '类型', m.`data` as '内容' from user as u,message as m where u.openid=m.openid"),
+				"select m.openid as 'openid', u.nickName as '昵称', datetime(m.cts, 'unixepoch', 'localtime') as '时间', m.type as '类型', m.`data` as '内容' from user as u,message as m where u.openid=m.openid"),
 				new ExcelTemplate()).export(httpServletResponse, "聊天记录.xls");
 	}
 
