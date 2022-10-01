@@ -20,9 +20,6 @@ import io.github.wcnnkh.wechatclass.bean.User;
 @Indexed
 public class UserManager {
 	@Autowired
-	public static UserManager instance;
-
-	@Autowired
 	private DB datasource;
 
 	public Map<String, User> guestMap = new HashMap<>();

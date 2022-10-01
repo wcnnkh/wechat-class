@@ -28,7 +28,10 @@ public class Wechat {
 
 	@Autowired
 	private DB connection;
-
+	@Autowired
+	private UserManager userManager;
+	@Autowired
+	private WebSettingManager webSettingManager;
 	private String openid;
 
 	@OnOpen
@@ -43,8 +46,8 @@ public class Wechat {
 
 		JSONObject json7 = new JSONObject();
 		json7.put("type", 7);
-		json7.put("user", UserManager.instance.getUser(openid));
-		sessionManager.sendText(json7.toJSONString(), UserManager.instance.lecturerMap.keySet());
+		json7.put("user", userManager.getUser(openid));
+		sessionManager.sendText(json7.toJSONString(), userManager.lecturerMap.keySet());
 	}
 
 	@OnMessage
@@ -73,7 +76,7 @@ public class Wechat {
 			break;
 		case 4:// 禁言/取消 if (user.getUserType() != 1) {// 只有讲师可以禁言 return; }
 
-			WebSetting setting = WebSettingManager.instance.getWebSetting(WebSettingType.classIsShutup);
+			WebSetting setting = webSettingManager.getWebSetting(WebSettingType.classIsShutup);
 			if (setting == null) {
 				setting = new WebSetting();
 				setting.setType(WebSettingType.classIsShutup.getValue());
@@ -86,11 +89,11 @@ public class Wechat {
 			sessionManager.sendText(json.toJSONString());
 			break;
 		case 5:// 举手
-			sessionManager.sendText(json.toJSONString(), UserManager.instance.lecturerMap.keySet());
+			sessionManager.sendText(json.toJSONString(), userManager.lecturerMap.keySet());
 			break;
 		default:
 			if (user.getUserType() == 0) {
-				WebSetting webSetting = WebSettingManager.instance.getWebSetting(WebSettingType.classIsShutup);
+				WebSetting webSetting = webSettingManager.getWebSetting(WebSettingType.classIsShutup);
 				if (webSetting != null && webSetting.getValue().equals("1")) {
 					json.put("type", 4);
 					json.put("data", "1");
@@ -125,7 +128,7 @@ public class Wechat {
 		sessionManager.sendText(json.toJSONString());
 
 		json.put("type", 8);
-		json.put("user", UserManager.instance.getUser(openid));
-		sessionManager.sendText(json.toJSONString(), UserManager.instance.lecturerMap.keySet());
+		json.put("user", userManager.getUser(openid));
+		sessionManager.sendText(json.toJSONString(), userManager.lecturerMap.keySet());
 	}
 }

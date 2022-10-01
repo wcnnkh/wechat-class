@@ -25,13 +25,16 @@ import io.github.wcnnkh.wechatclass.manager.WebSettingManager;
 public class IndexController {
 	@Autowired
 	private ResultFactory resultFactory;
+	@Autowired
+	private UserManager userManager;
+	@Autowired
+	private WebSettingManager webSettingManager;
 
 	@RequestMapping(value = "userinfo")
-	public void userinfo(String openid, String headimgurl, String nickname,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public void userinfo(String openid, String headimgurl, String nickname, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
 		if (openid != null) {
-			User user = UserManager.instance.getUser(openid);
+			User user = userManager.getUser(openid);
 			if (user == null) {
 				user = new User();
 				user.setOpenid(openid);
@@ -39,66 +42,57 @@ public class IndexController {
 				user.setNickName(nickname);
 				user.setRegisterTime(System.currentTimeMillis());
 				user.setUserType(0);
-				UserManager.instance.save(user);
+				userManager.save(user);
 			} else {
 				user.setTitleImg(headimgurl);
 				user.setNickName(nickname);
-				UserManager.instance.update(user);
+				userManager.update(user);
 			}
 
 			HttpSession httpSession = request.getSession(true);
-			UserManager.instance.setOpenId(httpSession, openid);
+			userManager.setOpenId(httpSession, openid);
 		}
 
-		response.sendRedirect(request.getContextPath() +  "/index.html");
+		response.sendRedirect(request.getContextPath() + "/index.html");
 	}
 
 	@RequestMapping(value = "index.html")
 	public Object index(ServerHttpRequest request) {
-		String openid = UserManager.instance.getOpenId(request.getSession());
+		String openid = userManager.getOpenId(request.getSession());
 		if (openid == null) {
 			return new Redirect(LoginFilter.LOGIN_URL);
 		}
 
 		ModelAndView view = new ModelAndView("/ftl/index.html");
-		view.put("user", UserManager.instance.getUser(openid));
-		view.put("className", WebSettingManager.instance
-				.getWebSetting(WebSettingType.className));
-		view.put("classPopularity", WebSettingManager.instance
-				.getWebSetting(WebSettingType.classPopularity));
-		view.put("classTime", WebSettingManager.instance
-				.getWebSetting(WebSettingType.classTime));
-		view.put("classCts", WebSettingManager.instance
-				.getWebSetting(WebSettingType.classCts));
-		view.put("classIsShutup", WebSettingManager.instance
-				.getWebSetting(WebSettingType.classIsShutup));
-		view.put("guestList", UserManager.instance.guestMap.values());
-		view.put("lecturerList", UserManager.instance.lecturerMap.values());
+		view.put("user", userManager.getUser(openid));
+		view.put("className", webSettingManager.getWebSetting(WebSettingType.className));
+		view.put("classPopularity", webSettingManager.getWebSetting(WebSettingType.classPopularity));
+		view.put("classTime", webSettingManager.getWebSetting(WebSettingType.classTime));
+		view.put("classCts", webSettingManager.getWebSetting(WebSettingType.classCts));
+		view.put("classIsShutup", webSettingManager.getWebSetting(WebSettingType.classIsShutup));
+		view.put("guestList", userManager.guestMap.values());
+		view.put("lecturerList", userManager.lecturerMap.values());
 		return view;
 	}
 
 	@ActionInterceptors(LoginFilter.class)
 	@RequestMapping(value = "chart.html")
 	public ModelAndView chat(ServerHttpRequest request) {
-		String openid = UserManager.instance.getOpenId(request.getSession());
-		request.setAttribute("user", UserManager.instance.getUser(openid));
-		request.setAttribute("classIsShutup", WebSettingManager.instance
-				.getWebSetting(WebSettingType.classIsShutup));
+		String openid = userManager.getOpenId(request.getSession());
+		request.setAttribute("user", userManager.getUser(openid));
+		request.setAttribute("classIsShutup", webSettingManager.getWebSetting(WebSettingType.classIsShutup));
 		request.setAttribute("lineCount", 0);
-		//request.setAttribute("lineCount", Wechat.sessionManager.getGroupSize());
+		// request.setAttribute("lineCount", Wechat.sessionManager.getGroupSize());
 		request.setAttribute("msgList", DBManager.getByIdList(Message.class));
-		request.setAttribute("className", WebSettingManager.instance
-				.getWebSetting(WebSettingType.className));
-		WebSetting webSetting = WebSettingManager.instance
-				.getWebSetting(WebSettingType.classPopularity);
+		request.setAttribute("className", webSettingManager.getWebSetting(WebSettingType.className));
+		WebSetting webSetting = webSettingManager.getWebSetting(WebSettingType.classPopularity);
 		if (webSetting == null) {
 			webSetting = new WebSetting();
 			webSetting.setValue("1");
 			webSetting.setType(WebSettingType.classPopularity.getValue());
 			DBManager.update(webSetting);
 		} else {
-			webSetting.setValue(Integer.parseInt(webSetting.getValue()) + 1
-					+ "");
+			webSetting.setValue(Integer.parseInt(webSetting.getValue()) + 1 + "");
 			DBManager.update(webSetting);
 		}
 		return new ModelAndView("/ftl/chart.html");

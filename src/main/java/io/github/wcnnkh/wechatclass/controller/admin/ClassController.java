@@ -27,22 +27,25 @@ public class ClassController {
 	private static DB datasource;
 	@Autowired
 	private ResultFactory resultFactory;
+	@Autowired
+	private UserManager userManager;
+	@Autowired
+	private WebSettingManager webSettingManager;
 
 	@RequestMapping(value = "classInfo.html")
 	public ModelAndView classInfo(HttpServletRequest request) {
-		request.setAttribute("className", WebSettingManager.instance.getWebSetting(WebSettingType.className));
-		request.setAttribute("classPopularity",
-				WebSettingManager.instance.getWebSetting(WebSettingType.classPopularity));
-		request.setAttribute("classTime", WebSettingManager.instance.getWebSetting(WebSettingType.classTime));
-		request.setAttribute("classCts", WebSettingManager.instance.getWebSetting(WebSettingType.classCts));
-		request.setAttribute("classIsShutup", WebSettingManager.instance.getWebSetting(WebSettingType.classIsShutup));
+		request.setAttribute("className", webSettingManager.getWebSetting(WebSettingType.className));
+		request.setAttribute("classPopularity", webSettingManager.getWebSetting(WebSettingType.classPopularity));
+		request.setAttribute("classTime", webSettingManager.getWebSetting(WebSettingType.classTime));
+		request.setAttribute("classCts", webSettingManager.getWebSetting(WebSettingType.classCts));
+		request.setAttribute("classIsShutup", webSettingManager.getWebSetting(WebSettingType.classIsShutup));
 		return new ModelAndView("/ftl/admin/classInfo.html");
 	}
 
 	@RequestMapping(value = "updateClassInfo", methods = HttpMethod.POST)
 	public Result updateClassInfo(String className, String classCts, int classTime, String classIsShutup,
 			int classPopularity) {
-		WebSetting webSetting = WebSettingManager.instance.getWebSetting(WebSettingType.className);
+		WebSetting webSetting = webSettingManager.getWebSetting(WebSettingType.className);
 		if (webSetting == null) {
 			webSetting = new WebSetting();
 			webSetting.setType(WebSettingType.className.getValue());
@@ -53,7 +56,7 @@ public class ClassController {
 			DBManager.update(webSetting);
 		}
 
-		webSetting = WebSettingManager.instance.getWebSetting(WebSettingType.classCts);
+		webSetting = webSettingManager.getWebSetting(WebSettingType.classCts);
 		if (webSetting == null) {
 			webSetting = new WebSetting();
 			webSetting.setType(WebSettingType.classCts.getValue());
@@ -64,7 +67,7 @@ public class ClassController {
 			DBManager.update(webSetting);
 		}
 
-		webSetting = WebSettingManager.instance.getWebSetting(WebSettingType.classTime);
+		webSetting = webSettingManager.getWebSetting(WebSettingType.classTime);
 		if (webSetting == null) {
 			webSetting = new WebSetting();
 			webSetting.setType(WebSettingType.classTime.getValue());
@@ -75,7 +78,7 @@ public class ClassController {
 			DBManager.update(webSetting);
 		}
 
-		webSetting = WebSettingManager.instance.getWebSetting(WebSettingType.classPopularity);
+		webSetting = webSettingManager.getWebSetting(WebSettingType.classPopularity);
 		if (webSetting == null) {
 			webSetting = new WebSetting();
 			webSetting.setType(WebSettingType.classPopularity.getValue());
@@ -86,7 +89,7 @@ public class ClassController {
 			DBManager.update(webSetting);
 		}
 
-		webSetting = WebSettingManager.instance.getWebSetting(WebSettingType.classIsShutup);
+		webSetting = webSettingManager.getWebSetting(WebSettingType.classIsShutup);
 		if (webSetting == null) {
 			webSetting = new WebSetting();
 			webSetting.setType(WebSettingType.classIsShutup.getValue());
@@ -101,13 +104,13 @@ public class ClassController {
 
 	@RequestMapping(value = "lecturerList.html")
 	public ModelAndView lecturerList(HttpServletRequest request) {
-		request.setAttribute("userList", UserManager.instance.lecturerMap.values());
+		request.setAttribute("userList", userManager.lecturerMap.values());
 		return new ModelAndView("/ftl/admin/lecturerList.html");
 	}
 
 	@RequestMapping(value = "guestList.html")
 	public ModelAndView guestList(HttpServletRequest request) {
-		request.setAttribute("userList", UserManager.instance.guestMap.values());
+		request.setAttribute("userList", userManager.guestMap.values());
 		return new ModelAndView("/ftl/admin/guestList.html");
 	}
 
@@ -156,14 +159,14 @@ public class ClassController {
 
 	@RequestMapping(value = "updateClassUser", methods = HttpMethod.POST)
 	public Result updateUser(String openid, int userType, String desc) {
-		User user = UserManager.instance.getUser(openid);
+		User user = userManager.getUser(openid);
 		if (user == null) {
 			return resultFactory.error("用户不存在");
 		}
 
 		user.setUserType(userType);
 		user.setUserDesc(desc);
-		UserManager.instance.update(user);
+		userManager.update(user);
 		return resultFactory.success();
 	}
 
