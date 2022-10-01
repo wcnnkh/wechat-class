@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import io.basc.framework.beans.annotation.Autowired;
+import io.basc.framework.context.ioc.annotation.Autowired;
 import io.basc.framework.context.result.ResultFactory;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.mvc.annotation.ActionInterceptors;

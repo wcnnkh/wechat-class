@@ -1,5 +1,6 @@
 package io.github.wcnnkh.wechatclass.controller.admin;
 
+import io.basc.framework.context.ioc.annotation.Autowired;
 import io.basc.framework.mvc.HttpChannel;
 import io.basc.framework.mvc.action.Action;
 import io.basc.framework.mvc.action.ActionInterceptor;
@@ -10,6 +11,8 @@ import io.github.wcnnkh.wechatclass.bean.admin.AdminUser;
 import io.github.wcnnkh.wechatclass.manager.AdminManager;
 
 public class AdminFilter implements ActionInterceptor{
+	@Autowired
+	private AdminManager adminManager;
 
 	@Override
 	public Object intercept(HttpChannel httpChannel, Action action,
@@ -25,13 +28,13 @@ public class AdminFilter implements ActionInterceptor{
 			return chain.intercept(httpChannel, action, parameters);
 		}
 		
-		AdminUser user = AdminManager.instance.getAdminUser(userSession.getUid());
+		AdminUser user = adminManager.getAdminUser(userSession.getUid());
 		if(user == null){
 			httpChannel.getResponse().sendRedirect(httpChannel.getResponse().getContentLength() + "/admin/core/toParentLogin.html");
 			return null;
 		}
 		
-		boolean b = AdminManager.instance.checkPath(httpChannel.getRequest().getRawMethod(), httpChannel.getRequest().getPath(), user.getGroupId());
+		boolean b = adminManager.checkPath(httpChannel.getRequest().getRawMethod(), httpChannel.getRequest().getPath(), user.getGroupId());
 		if(!b){
 			httpChannel.getResponse().sendError(403, "Insufficient user permissions");
 			return null;

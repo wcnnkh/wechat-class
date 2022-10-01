@@ -2,9 +2,9 @@ package io.github.wcnnkh.wechatclass.controller.admin;
 
 import javax.servlet.http.HttpServletRequest;
 
-import io.basc.framework.beans.annotation.Autowired;
 import io.basc.framework.codec.Encoder;
 import io.basc.framework.codec.support.CharsetCodec;
+import io.basc.framework.context.ioc.annotation.Autowired;
 import io.basc.framework.context.result.Result;
 import io.basc.framework.context.result.ResultFactory;
 import io.basc.framework.http.HttpMethod;
@@ -25,6 +25,8 @@ public class AdminController {
 	
 	@Autowired
 	private ResultFactory resultFactory;
+	@Autowired
+	private AdminManager adminManager;
 
 	@RequestMapping
 	public View index(UserSession<String> adminUser, ServerHttpRequest request) {
@@ -45,7 +47,7 @@ public class AdminController {
 			return resultFactory.error("参数错误");
 		}
 
-		AdminUser adminUser = AdminManager.instance.getAdminUser(user);
+		AdminUser adminUser = adminManager.getAdminUser(user);
 		if (adminUser == null) {
 			return resultFactory.error("用户不存在");
 		}

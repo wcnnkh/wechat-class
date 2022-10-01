@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import io.basc.framework.beans.annotation.Autowired;
+import io.basc.framework.context.ioc.annotation.Autowired;
 import io.basc.framework.context.result.Result;
 import io.basc.framework.context.result.ResultFactory;
 import io.basc.framework.db.DBManager;
@@ -26,30 +26,28 @@ import io.github.wcnnkh.wechatclass.manager.AdminManager;
 public class IndexController {
 	@Autowired
 	private ResultFactory resultFactory;
+	@Autowired
+	private AdminManager adminManager;
 
 	@RequestMapping(value = "core/top.html")
-	public ModelAndView top(UserToken<String> adminUser,
-			HttpServletRequest request) {
-		request.setAttribute("user", AdminManager.instance.getAdminUser(adminUser.getUid()));
+	public ModelAndView top(UserToken<String> adminUser, HttpServletRequest request) {
+		request.setAttribute("user", adminManager.getAdminUser(adminUser.getUid()));
 		return new ModelAndView("/ftl/admin/core/top.html");
 	}
 
 	@RequestMapping(value = "core/left.html")
-	public ModelAndView left(UserToken<String> adminUser,
-			HttpServletRequest request) {
-		request.setAttribute("menuMap",
-				AdminManager.instance.getUserShowMenu(AdminManager.instance.getAdminUser(adminUser.getUid())));
+	public ModelAndView left(UserToken<String> adminUser, HttpServletRequest request) {
+		request.setAttribute("menuMap", adminManager.getUserShowMenu(adminManager.getAdminUser(adminUser.getUid())));
 		return new ModelAndView("/ftl/admin/core/left.html");
 	}
 
 	@RequestMapping(value = "core/updatePwd", methods = HttpMethod.POST)
-	public Result updatePwd(String oldPwd, String newPwd,
-			UserSession<String> adminUser) {
+	public Result updatePwd(String oldPwd, String newPwd, UserSession<String> adminUser) {
 		if (StringUtils.isEmpty(oldPwd, newPwd)) {
 			return resultFactory.error("参数错误");
 		}
 
-		AdminUser user = AdminManager.instance.getAdminUser(adminUser.getUid());
+		AdminUser user = adminManager.getAdminUser(adminUser.getUid());
 		if (!user.getPwd().equals(AdminController.PASSWORD_ENCODE.encode(oldPwd))) {
 			return resultFactory.error("旧密码错误");
 		}
@@ -61,23 +59,19 @@ public class IndexController {
 
 	@RequestMapping(value = "core/admin_list.html")
 	public ModelAndView admin_list(HttpServletRequest request) {
-		request.setAttribute("adminList",
-				DBManager.getByIdList(AdminUser.class));
-		request.setAttribute("groupList",
-				DBManager.getByIdList(AdminGroup.class));
+		request.setAttribute("adminList", DBManager.getByIdList(AdminUser.class));
+		request.setAttribute("groupList", DBManager.getByIdList(AdminGroup.class));
 		return new ModelAndView("/ftl/admin/core/admin_list.html");
 	}
 
 	@RequestMapping(value = "core/add_admin_user.html")
 	public ModelAndView add_admin(HttpServletRequest request) {
-		request.setAttribute("groupList",
-				DBManager.getByIdList(AdminGroup.class));
+		request.setAttribute("groupList", DBManager.getByIdList(AdminGroup.class));
 		return new ModelAndView("/ftl/admin/core/add_admin_user.html");
 	}
 
 	@RequestMapping(value = "core/add_admin_user", methods = HttpMethod.POST)
-	public Result add_user(String user, String pwd, String realName,
-			long groupId) {
+	public Result add_user(String user, String pwd, String realName, long groupId) {
 		AdminUser adminUser = DBManager.getById(AdminUser.class, user);
 		if (adminUser != null) {
 			return resultFactory.error("账号已经存在");
@@ -93,8 +87,7 @@ public class IndexController {
 	}
 
 	@RequestMapping(value = "core/update_admin_user", methods = HttpMethod.POST)
-	public Result updateUser(String user, String pwd, String realName,
-			long groupId) {
+	public Result updateUser(String user, String pwd, String realName, long groupId) {
 		AdminUser adminUser = DBManager.getById(AdminUser.class, user);
 		if (adminUser == null) {
 			return resultFactory.error("用户不存在");
@@ -122,8 +115,7 @@ public class IndexController {
 
 	@RequestMapping(value = "core/group_list.html")
 	public ModelAndView group_list(HttpServletRequest request) {
-		request.setAttribute("groupList",
-				DBManager.getByIdList(AdminGroup.class));
+		request.setAttribute("groupList", DBManager.getByIdList(AdminGroup.class));
 		return new ModelAndView("/ftl/admin/core/group_list.html");
 	}
 
@@ -135,7 +127,7 @@ public class IndexController {
 		DBManager.save(adminGroup);
 		return resultFactory.success();
 	}
-	
+
 	@RequestMapping(value = "core/update_admin_group_name", methods = HttpMethod.POST)
 	public Result update_group_name(long groupId, String groupName) {
 		AdminGroup adminGroup = DBManager.getById(AdminGroup.class, groupId);
@@ -160,7 +152,7 @@ public class IndexController {
 		}
 		request.setAttribute("idMap", map);
 		request.setAttribute("group", adminGroup);
-		request.setAttribute("actionMap", AdminManager.instance.getAllMenu());
+		request.setAttribute("actionMap", adminManager.getAllMenu());
 		return new ModelAndView("/ftl/admin/core/updateGroup.html");
 	}
 
@@ -177,8 +169,7 @@ public class IndexController {
 	}
 
 	@RequestMapping(value = "core/updateAdminPwd", methods = HttpMethod.POST)
-	public Result updatePwd(UserSession<String> adminUser,
-			String oldPwd, String newPwd) {
+	public Result updatePwd(UserSession<String> adminUser, String oldPwd, String newPwd) {
 		AdminUser user = DBManager.getById(AdminUser.class, adminUser.getUid());
 		if (!user.getPwd().equals(AdminController.PASSWORD_ENCODE.encode(oldPwd))) {
 			return resultFactory.error("旧密码错误");
@@ -188,7 +179,7 @@ public class IndexController {
 		DBManager.update(user);
 		return resultFactory.success();
 	}
-	
+
 	@RequestMapping("/core/index.html")
 	public ModelAndView index(ServerHttpRequest request) {
 		return new ModelAndView("/ftl/admin/core/index.html");

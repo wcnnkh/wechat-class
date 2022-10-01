@@ -10,7 +10,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.alibaba.fastjson.JSONObject;
 
-import io.basc.framework.beans.annotation.Autowired;
+import io.basc.framework.context.ioc.annotation.Autowired;
 import io.basc.framework.db.DB;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.websocket.adapter.standard.StandardContainerConfigurator;
@@ -27,7 +27,7 @@ public class Wechat {
 	public static StandardSessionManager<String> sessionManager = new StandardSessionManager<>("openid");
 
 	@Autowired
-	private static DB connection;
+	private DB connection;
 
 	private String openid;
 

@@ -7,9 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpSession;
 
-import io.basc.framework.beans.annotation.Autowired;
-import io.basc.framework.beans.annotation.InitMethod;
 import io.basc.framework.context.annotation.Indexed;
+import io.basc.framework.context.ioc.annotation.Autowired;
+import io.basc.framework.context.ioc.annotation.InitMethod;
 import io.basc.framework.db.DB;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.security.session.Session;
