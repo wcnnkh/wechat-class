@@ -140,16 +140,17 @@ public class ClassController {
 		}
 
 		int begin = (page - 1) * 20;
+
 		if (content == null || content.length() == 0) {
 			request.setAttribute("userList",
 					datasource
 							.query(User.class,
 									new SimpleSql("select * from user order by registerTime desc limit ?,20", begin))
-							.shared());
+							.toList());
 		} else {
 			request.setAttribute("userList", datasource.query(User.class, new SimpleSql(
 					"select * from user where phone like ? or nickName like ? order by registerTime desc limit ?,20",
-					"%" + content + "%", "%" + content + "%", begin)).shared());
+					"%" + content + "%", "%" + content + "%", begin)).toList());
 		}
 
 		request.setAttribute("content", content);
