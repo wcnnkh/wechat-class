@@ -43,7 +43,7 @@ public class IndexController {
 
 	@RequestMapping(value = "core/updatePwd", methods = HttpMethod.POST)
 	public Result updatePwd(String oldPwd, String newPwd, UserSession<String> adminUser) {
-		if (StringUtils.isEmpty(oldPwd, newPwd)) {
+		if (StringUtils.isAnyEmpty(oldPwd, newPwd)) {
 			return resultFactory.error("参数错误");
 		}
 

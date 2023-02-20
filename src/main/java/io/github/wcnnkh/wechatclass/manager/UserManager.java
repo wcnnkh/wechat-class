@@ -28,14 +28,14 @@ public class UserManager {
 	@InitMethod
 	private void init() {
 		List<User> list = datasource.query(User.class, new SimpleSql("select * from `user` where userType=?", 1))
-				.list();
+				.toList();
 		if (list != null) {
 			for (User user : list) {
 				lecturerMap.put(user.getOpenid(), user);
 			}
 		}
 
-		list = datasource.query(User.class, new SimpleSql("select * from `user` where userType=?", 2)).list();
+		list = datasource.query(User.class, new SimpleSql("select * from `user` where userType=?", 2)).toList();
 		if (list != null) {
 			for (User user : list) {
 				guestMap.put(user.getOpenid(), user);

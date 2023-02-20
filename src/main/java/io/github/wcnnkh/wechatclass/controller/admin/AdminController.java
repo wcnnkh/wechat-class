@@ -43,7 +43,7 @@ public class AdminController {
 
 	@RequestMapping(value = "core/login", methods = HttpMethod.POST)
 	public Result login(String user, String pwd, HttpChannel httpChannel) {
-		if (StringUtils.isEmpty(user, pwd)) {
+		if (StringUtils.isAnyEmpty(user, pwd)) {
 			return resultFactory.error("参数错误");
 		}
 
