@@ -3,14 +3,15 @@ package io.github.wcnnkh.wechatclass.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 
 import io.basc.framework.context.ioc.annotation.Autowired;
-import io.basc.framework.context.result.Result;
-import io.basc.framework.context.result.ResultFactory;
+import io.basc.framework.context.transaction.Result;
+import io.basc.framework.context.transaction.ResultFactory;
 import io.basc.framework.db.DB;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.http.HttpMethod;
 import io.basc.framework.microsoft.ExcelTemplate;
 import io.basc.framework.mvc.annotation.ActionInterceptors;
 import io.basc.framework.sql.SimpleSql;
+import io.basc.framework.util.ResultSet;
 import io.basc.framework.web.ServerHttpResponse;
 import io.basc.framework.web.message.model.ModelAndView;
 import io.basc.framework.web.pattern.annotation.RequestMapping;
@@ -173,9 +174,11 @@ public class ClassController {
 	@RequestMapping(value = "downMessage")
 	public void downMessage(HttpServletRequest request, ServerHttpResponse httpServletResponse) throws Exception {
 		// TODO 这里是sqlite特有的语法datetime
-		datasource.export(new SimpleSql(
-				"select m.openid as 'openid', u.nickName as '昵称', datetime(m.cts/1000, 'unixepoch', 'localtime') as '时间', m.type as '类型', m.`data` as '内容' from user as u,message as m where u.openid=m.openid"),
-				new ExcelTemplate()).export(httpServletResponse, "聊天记录.xls");
+		datasource.query(ResultSet.class, new SimpleSql(
+				"select m.openid as 'openid', u.nickName as '昵称', datetime(m.cts/1000, 'unixepoch', 'localtime') as '时间', m.type as '类型', m.`data` as '内容' from user as u,message as m where u.openid=m.openid"))
+				.export((e) -> {
+					new ExcelTemplate().process(e.iterator(), httpServletResponse, "聊天记录.xls");
+				});
 	}
 
 	@RequestMapping(value = "notification")

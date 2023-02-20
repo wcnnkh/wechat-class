@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import io.basc.framework.context.ioc.annotation.Autowired;
-import io.basc.framework.context.result.Result;
-import io.basc.framework.context.result.ResultFactory;
+import io.basc.framework.context.transaction.Result;
+import io.basc.framework.context.transaction.ResultFactory;
 import io.basc.framework.db.DBManager;
 import io.basc.framework.http.HttpMethod;
 import io.basc.framework.mvc.annotation.ActionInterceptors;
