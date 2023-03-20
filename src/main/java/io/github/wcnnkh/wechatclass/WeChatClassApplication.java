@@ -1,5 +1,6 @@
 package io.github.wcnnkh.wechatclass;
 
+import io.basc.framework.boot.annotation.BootApplication;
 import io.basc.framework.boot.support.MainApplication;
 import io.basc.framework.context.annotation.Bean;
 import io.basc.framework.db.DB;
@@ -7,6 +8,7 @@ import io.basc.framework.sqlite.SQLiteDB;
 import io.basc.framework.web.message.model.ModelAndViewRegistry;
 import io.basc.framework.web.resource.StaticResourceRegistry;
 
+@BootApplication
 public class WeChatClassApplication {
 	public static void main(String[] args) {
 		MainApplication.run(WeChatClassApplication.class, args);
@@ -25,7 +27,7 @@ public class WeChatClassApplication {
 		staticResourceRegistry.add("/static/**", "/");
 		return staticResourceRegistry;
 	}
-	
+
 	@Bean
 	public ModelAndViewRegistry getModelAndViewRegistry() {
 		ModelAndViewRegistry registry = new ModelAndViewRegistry();
